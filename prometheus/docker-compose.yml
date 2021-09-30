@@ -1,0 +1,34 @@
+version: '3.5'
+services:
+
+  prometheus:
+    image: natasilva01/prometheus
+    container_name: prometheus
+    ports:
+      - '9090:9090'
+    networks:
+      - net-driver
+      # - debito_net-driver
+      # - credito_net-driver
+      # # - conta-corrente_net-driver
+      # - investimento_net-driver
+      # - fatura_net-driver
+    # external_links:
+      # - debito:debito
+      # - credito:credito
+      # - contacorrente:contacorrente
+      # - investimento:investimento
+      # - fatura:fatura
+networks:
+  net-driver:
+    driver: bridge
+  # debito_net-driver:
+  #   external: true
+  # credito_net-driver:
+  #   external: true
+  # conta-corrente_net-driver:
+  #   external: true
+  # investimento_net-driver:
+  #   external: true
+  # fatura_net-driver:
+  #   external: true
