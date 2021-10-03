@@ -1,0 +1,21 @@
+version: '3.5'
+services:
+
+  dbcredito:
+    image: mysql
+    container_name: dbcredito
+    hostname: dbcredito
+    restart: always
+    networks:
+      - net-driver
+    ports:
+      - '3307:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: creditodb
+      MYSQL_USER: mysql
+      MYSQL_PASSWORD: mysql
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536

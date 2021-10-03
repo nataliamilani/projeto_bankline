@@ -1,0 +1,22 @@
+version: '3.5'
+services:
+
+  dbinvestimento:
+    image: mysql
+    container_name: dbinvestimento
+    hostname: dbinvestimento
+    restart: always
+    networks:
+      - net-driver
+    ports:
+      - '3309:3306'
+    environment:
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: investimentodb
+      MYSQL_USER: mysql
+      MYSQL_PASSWORD: mysql
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536

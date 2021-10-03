@@ -1,0 +1,103 @@
+services:
+
+  # SERVICE DISCOVERY #
+  eureka:
+    extends:
+      file: ./eureka/eureka.yml
+      service: eureka
+
+  # CREDITO #
+  credito:
+    extends:
+      file: './credito/credito.yml'
+      service: credito
+    links:
+      - dbcredito
+    restart: on-failure
+  dbcredito:
+    extends:
+      file: './credito/database.yml'
+      service: dbcredito
+    restart: on-failure
+
+  # DEBITO #
+  debito:
+    extends:
+      file: './debito/debito.yml'
+      service: debito
+    links:
+      - dbdebito
+    restart: on-failure
+  dbdebito:
+    extends:
+      file: './debito/database.yml'
+      service: dbdebito
+    restart: on-failure
+
+  # INVESTIMENTO #
+  investimento:
+    extends:
+      file: './investimento/investimento.yml'
+      service: investimento
+    links:
+      - dbinvestimento
+      - credito
+      - debito
+    restart: on-failure
+  dbinvestimento:
+    extends:
+      file: './investimento/database.yml'
+      service: dbinvestimento
+    restart: on-failure
+
+  # CONTACORRENTE #
+  contacorrente:
+     extends:
+       file: './contacorrente/contacorrente.yml'
+       service: contacorrente
+     links:
+     - dbcontacorrente
+     - credito
+     - debito
+     restart: on-failure
+  dbcontacorrente:
+    extends:
+      file: './contacorrente/database.yml'
+      service: dbcontacorrente
+     restart: on-failure
+
+  # FATURA #
+  fatura:
+    extends:
+      file: './fatura/fatura.yml'
+      service: fatura
+    links:
+      - dbfatura
+      - credito
+      - debito
+      - contacorrente
+    restart: on-failure
+  dbfatura:
+    extends:
+      file: './fatura/database.yml'
+      service: dbfatura
+      restart: on-failure
+
+  # PROMETHEUS #
+  prometheus:
+    image: natasilva01/prometheus
+    container_name: prometheus
+    ports:
+      - '9090:9090'
+    networks:
+      - net-driver
+    links:
+      - credito
+      - debito
+      - investimento
+      - contacorrente
+      - fatura
+
+networks:
+  net-driver:
+    driver: bridge

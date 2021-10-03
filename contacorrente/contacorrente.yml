@@ -1,0 +1,10 @@
+version: '3.5'
+services:
+
+  contacorrente:
+    container_name: app-contacorrente
+    image: natasilva01/contacorrente
+    ports:
+      - '8083:8083'
+    networks:
+      - net-driver

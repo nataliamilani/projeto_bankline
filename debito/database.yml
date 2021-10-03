@@ -1,0 +1,21 @@
+version: '3.5'
+services:
+
+  dbdebito:
+    image: mysql
+    container_name: dbdebito
+    hostname: dbdebito
+    restart: always
+    networks:
+      - net-driver
+    ports:
+      - '3305:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: debitodb
+      MYSQL_USER: mysql
+      MYSQL_PASSWORD: mysql
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536

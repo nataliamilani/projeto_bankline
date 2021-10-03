@@ -1,0 +1,10 @@
+version: '3.5'
+services:
+
+  credito:
+    container_name: app-credito
+    image: natasilva01/credito
+    ports:
+      - '8081:8081'
+    networks:
+      - net-driver

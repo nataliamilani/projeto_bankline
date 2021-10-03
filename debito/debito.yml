@@ -1,0 +1,10 @@
+version: '3.5'
+services:
+
+  debito:
+    container_name: app-debito
+    image: natasilva01/debito
+    ports:
+      - '8082:8082'
+    networks:
+      - net-driver

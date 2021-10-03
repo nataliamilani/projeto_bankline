@@ -1,0 +1,10 @@
+version: '3.5'
+services:
+
+  fatura:
+    container_name: app-fatura
+    image: natasilva01/fatura
+    ports:
+      - '8084:8084'
+    networks:
+      - net-driver

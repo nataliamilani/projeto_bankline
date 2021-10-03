@@ -1,0 +1,10 @@
+version: '3.5'
+services:
+
+  investimento:
+    container_name: app-investimento
+    image: natasilva01/investimento
+    ports:
+      - '8080:8080'
+    networks:
+      - net-driver
