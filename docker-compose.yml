@@ -1,19 +1,22 @@
 services:
-
+  
   # SERVICE DISCOVERY #
   eureka:
     extends:
       file: ./eureka/eureka.yml
       service: eureka
-
+    
   # CREDITO #
   credito:
     extends:
       file: './credito/credito.yml'
       service: credito
-    links:
-      - dbcredito
+    links: 
+    - dbcredito
     restart: on-failure
+    depends_on:
+      - eureka
+      - dbcredito
   dbcredito:
     extends:
       file: './credito/database.yml'
@@ -25,7 +28,10 @@ services:
     extends:
       file: './debito/debito.yml'
       service: debito
-    links:
+    links: 
+    - dbdebito
+    depends_on:
+      - credito
       - dbdebito
     restart: on-failure
   dbdebito:
@@ -33,23 +39,7 @@ services:
       file: './debito/database.yml'
       service: dbdebito
     restart: on-failure
-
-  # INVESTIMENTO #
-  investimento:
-    extends:
-      file: './investimento/investimento.yml'
-      service: investimento
-    links:
-      - dbinvestimento
-      - credito
-      - debito
-    restart: on-failure
-  dbinvestimento:
-    extends:
-      file: './investimento/database.yml'
-      service: dbinvestimento
-    restart: on-failure
-
+    
   # CONTACORRENTE #
   contacorrente:
      extends:
@@ -60,11 +50,14 @@ services:
      - credito
      - debito
      restart: on-failure
+     depends_on:
+      - debito
+      - dbcontacorrente
   dbcontacorrente:
     extends:
       file: './contacorrente/database.yml'
       service: dbcontacorrente
-     restart: on-failure
+    restart: on-failure
 
   # FATURA #
   fatura:
@@ -77,11 +70,33 @@ services:
       - debito
       - contacorrente
     restart: on-failure
+    depends_on:
+      - contacorrente
+      - dbfatura
   dbfatura:
     extends:
       file: './fatura/database.yml'
       service: dbfatura
-      restart: on-failure
+    restart: on-failure
+
+  # INVESTIMENTO #
+  investimento:
+    extends:
+      file: './investimento/investimento.yml'
+      service: investimento
+    links: 
+    - dbinvestimento
+    - credito
+    - debito
+    restart: on-failure
+    depends_on:
+      - fatura
+      - dbinvestimento
+  dbinvestimento:
+    extends:
+      file: './investimento/database.yml'
+      service: dbinvestimento
+    restart: on-failure
 
   # PROMETHEUS #
   prometheus:
@@ -91,13 +106,23 @@ services:
       - '9090:9090'
     networks:
       - net-driver
-    links:
-      - credito
-      - debito
-      - investimento
-      - contacorrente
-      - fatura
+    links: 
+    - credito
+    - debito
+    - investimento
 
+  # API-GATEWAY #
+  apigateway:
+    image: natasilva01/api-gateway
+    container_name: api-gateway
+    ports:
+      - '9000:9000'
+    networks:
+      - net-driver
+    depends_on:
+      - prometheus
+
+  
 networks:
   net-driver:
     driver: bridge
