@@ -51,5 +51,5 @@ Para subir os containers deste projeto, basta utilizar o comando "docker-compose
 	http://35.199.91.25:9000/{nome_container_app}/{rota_controller}
 OBS: no servidor para acessar os endpoints das aplicações, apenas a porta 9000 (porta api-gateway) estará disponível
 
-**Postman - link para import na plataforma - URL Google Cloud:**
-https://www.getpostman.com/collections/62506a681c374770e344
+**Postman - Os arquivos de collection e environment das aplicações com as URL da Google Cloud, encontra-se no link abaixo:**
+https://github.com/nataliamilani/collection_projeto-bankline
